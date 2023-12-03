@@ -1,0 +1,116 @@
+.root {
+    -fx-background-color: #18191A;
+}
+
+.label, .text, .button, .menu-button, .radio-button, .checkbox, .text-field, .password-field, .text-area {
+    -fx-text-fill: #E4E6EB; /* Primary text */
+}
+
+.button, .menu-button, .radio-button, .checkbox {
+    -fx-base: #242526; /* Card color */
+}
+
+.button:hover, .menu-button:hover, .radio-button:hover, .checkbox:hover {
+    -fx-base: #3A3B3C; /* Hover color */
+}
+
+.table-view {
+    -fx-base: #242526; /* Card color for tables */
+    -fx-control-inner-background: #18191A; /* Background color for table */
+    -fx-background-color: #242526; /* Card color for table header */
+    -fx-table-cell-border-color: #3A3B3C; /* Hover color for table grid lines */
+    -fx-text-fill: #E4E6EB; /* Primary text for table content */
+}
+
+.table-view:focused .table-row-cell:selected {
+    -fx-background-color: #4E4F50; /* Slightly lighter hover color for selected table row */
+}
+
+.table-view .column-header, .table-view .column-header-background .filler {
+    -fx-background-color: #242526; /* Card color for table header */
+}
+
+.table-view .column-header:hover {
+    -fx-background-color: #4E4F50; /* Card color for table header */
+}
+
+.context-menu {
+    -fx-background-color: #242526; /* Card color for context menus */
+}
+
+.menu, .menu-item {
+    -fx-background-color: #242526; /* Card color for menus */
+}
+
+.menu-item:hover {
+    -fx-background-color: #3A3B3C; /* Hover color for menu items */
+}
+
+.text-area, .text-field, .password-field {
+    -fx-control-inner-background: #3A3B3C; /* Hover color for text input fields background */
+    -fx-text-fill: #E4E6EB; /* Primary text for text input fields */
+}
+
+.scroll-bar {
+    -fx-background-color: #18191A; /* Background color for scroll bars */
+}
+
+.scroll-bar .thumb {
+    -fx-background-color: #3A3B3C; /* Hover color for scroll bars */
+}
+
+.slider .track{
+    -fx-background-color: #242526;
+}
+
+.slider .track:hover{
+    -fx-background-color: #3A3B3C;
+}
+
+.slider .thumb{
+    -fx-background-color: #242526;
+}
+
+.slider .thumb:hover{
+    -fx-background-color: #3A3B3C;
+}
+
+.choice-box {
+    -fx-background-color: #242526;
+}
+
+.choice-box:hover{
+    -fx-background-color: #3A3B3C;
+}
+
+
+/* Menu Bar */
+.menu-bar {
+    -fx-background-color: #242526; /* Card color */
+}
+
+/* Tree View */
+.tree-view {
+    -fx-background-color: #242526; /* Card color for tree background */
+}
+
+.tree-cell {
+    -fx-text-fill: #E4E6EB; /* Primary text color */
+    -fx-background-color: #18191A; /* Background color */
+}
+
+.tree-cell:focused,
+.tree-cell:hover {
+    -fx-background-color: #3A3B3C; /* Hover color */
+}
+
+.tree-cell:selected {
+    -fx-background-color: #4E4F50; /* Selected cell color */
+    -fx-text-fill: #E4E6EB; /* Selected text color */
+}
+
+/* WebView */
+.web-view {
+    -fx-background-color: #18191A; /* Background color for webview, might not apply to HTML content */
+}
+

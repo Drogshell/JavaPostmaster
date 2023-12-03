@@ -11,14 +11,37 @@ import javafx.scene.Scene;
 import javafx.stage.Stage;
 
 import java.io.IOException;
+import java.util.ArrayList;
 
 public class ViewFactory {
 
     private EmailManager emailManager;
 
+    private ArrayList<Stage> activeStages;
+
     public ViewFactory(EmailManager emailManager) {
         this.emailManager = emailManager;
+        activeStages = new ArrayList<Stage>();
     }
+
+    public ColourThemes getColourThemes() {
+        return colourThemes;
+    }
+
+    public void setColourThemes(ColourThemes colourThemes) {
+        this.colourThemes = colourThemes;
+    }
+
+    public FontSizes getFontSizes() {
+        return fontSizes;
+    }
+
+    public void setFontSizes(FontSizes fontSizes) {
+        this.fontSizes = fontSizes;
+    }
+
+    private ColourThemes colourThemes = ColourThemes.DEFAULT;
+    private FontSizes fontSizes = FontSizes.MEDIUM;
 
     public void ShowLoginWindow(){
         BaseController controller = new LoginWindowController(emailManager, this, "/com/rambukpotha/mail/LoginWindow.fxml");
@@ -37,6 +60,7 @@ public class ViewFactory {
 
     public void CloseStage(Stage stageToClose){
         stageToClose.close();
+        activeStages.remove(stageToClose);
     }
 
     private void InitStage(BaseController controller) {
@@ -53,6 +77,15 @@ public class ViewFactory {
         Stage stage = new Stage();
         stage.setScene(scene);
         stage.show();
+        activeStages.add(stage);
     }
 
+    public void updateStyles() {
+        for (Stage stage: activeStages){
+            Scene scene = stage.getScene();
+            scene.getStylesheets().clear();
+            scene.getStylesheets().add(getClass().getResource(ColourThemes.getCssPath(colourThemes)).toExternalForm());
+            scene.getStylesheets().add(getClass().getResource(FontSizes.getCssPath(fontSizes)).toExternalForm());
+        }
+    }
 }
