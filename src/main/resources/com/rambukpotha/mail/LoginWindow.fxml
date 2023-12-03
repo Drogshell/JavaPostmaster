@@ -1,13 +1,40 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <?import javafx.geometry.Insets?>
-<?import javafx.scene.control.Label?>
-<?import javafx.scene.layout.VBox?>
-
 <?import javafx.scene.control.Button?>
-<VBox alignment="CENTER" spacing="20.0" xmlns:fx="http://javafx.com/fxml"
-      fx:controller="com.rambukpotha.mail.MailController">
-    <padding>
-        <Insets bottom="20.0" left="20.0" right="20.0" top="20.0"/>
-    </padding>
-</VBox>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.PasswordField?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.text.Font?>
+
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="550.0" prefWidth="400.0" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.rambukpotha.mail.controller.MailController">
+   <padding>
+      <Insets bottom="50.0" left="50.0" right="50.0" top="50.0" />
+   </padding>
+   <children>
+      <Label alignment="CENTER" layoutX="32.0" layoutY="26.0" prefHeight="48.0" prefWidth="77.0" text="Log in">
+         <font>
+            <Font name="Roboto Bold" size="25.0" />
+         </font>
+      </Label>
+      <Label alignment="CENTER" layoutX="32.0" layoutY="82.0" prefHeight="37.0" prefWidth="60.0" text="Email">
+         <font>
+            <Font name="Roboto Bold" size="15.0" />
+         </font>
+      </Label>
+      <TextField fx:id="emailAddressField" layoutX="42.0" layoutY="120.0" prefHeight="38.0" prefWidth="306.0" />
+      <Label alignment="CENTER" layoutX="42.0" layoutY="187.0" prefHeight="38.0" prefWidth="78.0" text="Password">
+         <font>
+            <Font name="Roboto Bold" size="15.0" />
+         </font>
+      </Label>
+      <PasswordField fx:id="passwordField" layoutX="46.0" layoutY="225.0" prefHeight="38.0" prefWidth="306.0" />
+      <Button fx:id="loginButton" alignment="CENTER" layoutX="45.0" layoutY="305.0" mnemonicParsing="false" onAction="#loginButtonAction" prefHeight="52.0" prefWidth="306.0" text="Log in" textAlignment="CENTER">
+         <font>
+            <Font size="25.0" />
+         </font>
+      </Button>
+      <Label fx:id="messageLabel" layoutX="98.0" layoutY="441.0" prefHeight="58.0" prefWidth="200.0" />
+   </children>
+</AnchorPane>
