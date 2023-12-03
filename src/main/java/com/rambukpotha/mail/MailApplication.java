@@ -1,5 +1,6 @@
 package com.rambukpotha.mail;
 
+import com.rambukpotha.mail.view.ViewFactory;
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
@@ -10,10 +11,8 @@ import java.io.IOException;
 public class MailApplication extends Application {
     @Override
     public void start(Stage stage) throws IOException {
-        FXMLLoader fxmlLoader = new FXMLLoader(MailApplication.class.getResource("LoginWindow.fxml"));
-        Scene scene = new Scene(fxmlLoader.load());
-        stage.setScene(scene);
-        stage.show();
+        ViewFactory viewFactory = new ViewFactory(new EmailManager());
+        viewFactory.ShowLoginWindow();
     }
 
     public static void main(String[] args) {
