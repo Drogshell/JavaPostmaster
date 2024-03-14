@@ -1,8 +1,11 @@
 package com.rambukpotha.mail.controller;
 
 import com.rambukpotha.mail.EmailManager;
+import com.rambukpotha.mail.controller.services.LoginService;
+import com.rambukpotha.mail.model.EmailAccount;
 import com.rambukpotha.mail.view.ViewFactory;
 import javafx.fxml.FXML;
+import javafx.fxml.Initializable;
 import javafx.scene.control.Label;
 import javafx.event.ActionEvent;
 import javafx.scene.control.Button;
@@ -10,7 +13,10 @@ import javafx.scene.control.PasswordField;
 import javafx.scene.control.TextField;
 import javafx.stage.Stage;
 
-public class LoginWindowController extends BaseController {
+import java.net.URL;
+import java.util.ResourceBundle;
+
+public class LoginWindowController extends BaseController implements Initializable {
 
     @FXML
     private TextField emailAddressField;
@@ -29,11 +35,55 @@ public class LoginWindowController extends BaseController {
     }
 
     @FXML
-    void loginButtonAction(ActionEvent event) {
-        System.out.println("Login in button pressed");
-        viewFactory.ShowMainWindow();
-        Stage stage = (Stage) messageLabel.getScene().getWindow();
-        viewFactory.CloseStage(stage);
+    void loginButtonAction() {
+        if (ValidateFields()){
+            EmailAccount emailAccount = new EmailAccount(emailAddressField.getText(), passwordField.getText());
+            LoginService loginService = new LoginService(emailAccount, emailManager);
+            loginService.start();
+            loginService.setOnSucceeded(event -> {
+                EmailLoginResult emailLoginResult = (EmailLoginResult) loginService.getValue();
+                switch (emailLoginResult){
+                    case SUCCESS:
+                        if (!viewFactory.isMainViewInit()) {
+                            viewFactory.ShowMainWindow();
+                        }
+                        Stage stage = (Stage) messageLabel.getScene().getWindow();
+                        viewFactory.CloseStage(stage);
+                        return;
+
+                    case FAILED_BY_CREDENTIALS:
+                        messageLabel.setText("Invalid Credentials");
+                        return;
+
+                    case FAILED_BY_NETWORK:
+                        messageLabel.setText("Network Error");
+                        return;
+                    case FAILED_BY_UNEXPECTED_ERROR:
+                        messageLabel.setText("Unexpected Error");
+                        return;
+                    default:
+                }
+            });
+
+        }
+
     }
 
+    private boolean ValidateFields(){
+        if (emailAddressField.getText().isEmpty()){
+            messageLabel.setText("Email can not be empty!");
+            return false;
+        }else if (passwordField.getText().isEmpty()){
+            messageLabel.setText("Enter your password.");
+            return false;
+        }
+
+        return true;
+    }
+
+    @Override
+    public void initialize(URL url, ResourceBundle resourceBundle) {
+        // I removed this code for the GIT push.
+        // It's meant to hold the login details for faster access into the account.
+    }
 }
