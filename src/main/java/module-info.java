@@ -10,4 +10,5 @@ module com.rambukpotha.mail {
     exports com.rambukpotha.mail;
     exports com.rambukpotha.mail.controller;
     opens com.rambukpotha.mail.controller to javafx.fxml;
+    opens com.rambukpotha.mail.model;
 }
