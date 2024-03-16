@@ -4,15 +4,14 @@ import com.rambukpotha.mail.EmailManager;
 import com.rambukpotha.mail.controller.services.MessageRenderService;
 import com.rambukpotha.mail.model.EmailMessage;
 import com.rambukpotha.mail.model.EmailTreeItem;
+import com.rambukpotha.mail.model.MessageSizeInteger;
 import com.rambukpotha.mail.view.ViewFactory;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
-import javafx.scene.control.MenuBar;
-import javafx.scene.control.TableView;
-import javafx.scene.control.TreeView;
-import javafx.scene.control.TableColumn;
+import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.web.WebView;
+import javafx.util.Callback;
 
 import java.net.URL;
 import java.util.Date;
@@ -31,7 +30,7 @@ public class MainWindowController extends BaseController implements Initializabl
     @FXML
     private TableColumn<EmailMessage, String> recipientColumn;
     @FXML
-    private TableColumn<EmailMessage, Integer> sizeColumn;
+    private TableColumn<EmailMessage, MessageSizeInteger> sizeColumn;
     @FXML
     private TableColumn<EmailMessage, Date> dateColumn;
 
@@ -56,6 +55,28 @@ public class MainWindowController extends BaseController implements Initializabl
         SetUpFolderSelection();
         SetUpMessageRenderService();
         SetUpMessageSelection();
+        SetUpBolding();
+    }
+
+    private void SetUpBolding() {
+        emailsTableView.setRowFactory(new Callback<TableView<EmailMessage>, TableRow<EmailMessage>>() {
+            @Override
+            public TableRow<EmailMessage> call(TableView<EmailMessage> emailMessageTableView) {
+                return new TableRow<EmailMessage>(){
+                    @Override
+                    protected void updateItem(EmailMessage item, boolean empty){
+                        super.updateItem(item, empty);
+                        if (item != null){
+                            if (item.isRead()){
+                                setStyle("");
+                            }else{
+                                setStyle("-fx-font-weight: bold");
+                            }
+                        }
+                    }
+                };
+            }
+        });
     }
 
     private void SetUpEmailsTreeView() {
@@ -67,7 +88,7 @@ public class MainWindowController extends BaseController implements Initializabl
         senderColumn.setCellValueFactory(new PropertyValueFactory<EmailMessage, String>("sender"));
         subjectColumn.setCellValueFactory(new PropertyValueFactory<EmailMessage, String>("subject"));
         recipientColumn.setCellValueFactory(new PropertyValueFactory<EmailMessage, String>("recipient"));
-        sizeColumn.setCellValueFactory(new PropertyValueFactory<EmailMessage, Integer>("size"));
+        sizeColumn.setCellValueFactory(new PropertyValueFactory<EmailMessage, MessageSizeInteger>("size"));
         dateColumn.setCellValueFactory(new PropertyValueFactory<EmailMessage, Date>("date"));
     }
 

@@ -1,7 +1,6 @@
 package com.rambukpotha.mail.model;
 
 import jakarta.mail.Message;
-import javafx.beans.property.SimpleIntegerProperty;
 import javafx.beans.property.SimpleObjectProperty;
 import javafx.beans.property.SimpleStringProperty;
 
@@ -12,7 +11,7 @@ public class EmailMessage {
     private SimpleStringProperty subject;
     private SimpleStringProperty sender;
     private SimpleStringProperty recipient;
-    private SimpleIntegerProperty size;
+    private SimpleObjectProperty<MessageSizeInteger> size;
     private SimpleObjectProperty<Date> date;
     private boolean isRead;
     private Message message;
@@ -22,7 +21,7 @@ public class EmailMessage {
         this.subject = new SimpleStringProperty(subject);
         this.sender = new SimpleStringProperty(sender);
         this.recipient = new SimpleStringProperty(recipient);
-        this.size = new SimpleIntegerProperty(size);
+        this.size = new SimpleObjectProperty<MessageSizeInteger>(new MessageSizeInteger(size));
         this.date = new SimpleObjectProperty<>(date);
         this.isRead = isRead;
         this.message = message;
@@ -52,11 +51,11 @@ public class EmailMessage {
         return recipient;
     }
 
-    public int getSize() {
+    public MessageSizeInteger getSize() {
         return size.get();
     }
 
-    public SimpleIntegerProperty sizeProperty() {
+    public SimpleObjectProperty<MessageSizeInteger> sizeProperty() {
         return size;
     }
 
