@@ -28,25 +28,25 @@ public class SettingsWindowController extends BaseController implements Initiali
     }
 
     @FXML
-    void ApplyButtonAction() {
+    void applyButtonAction() {
         viewFactory.setColourThemes(themesChoiceBox.getValue());
         viewFactory.setFontSizes(FontSizes.values()[(int)(fontSizeSlider.getValue())]);
         viewFactory.updateStyles();
     }
 
     @FXML
-    void CancelButtonAction() {
+    void cancelButtonAction() {
         Stage stage = (Stage) fontSizeSlider.getScene().getWindow();
         viewFactory.CloseStage(stage);
     }
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
-        ThemePicker();
-        FontSizePicker();
+        themePicker();
+        fontSizePicker();
     }
 
-    private void FontSizePicker() {
+    private void fontSizePicker() {
         fontSizeSlider.setMin(0);
         fontSizeSlider.setMax(FontSizes.values().length - 1);
         fontSizeSlider.setValue(viewFactory.getFontSizes().ordinal());
@@ -73,7 +73,7 @@ public class SettingsWindowController extends BaseController implements Initiali
         }));
     }
 
-    private void ThemePicker() {
+    private void themePicker() {
         themesChoiceBox.setItems(FXCollections.observableArrayList(ColourThemes.values()));
         themesChoiceBox.setValue(viewFactory.getColourThemes());
     }

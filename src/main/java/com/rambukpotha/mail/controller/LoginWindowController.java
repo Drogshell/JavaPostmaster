@@ -7,7 +7,6 @@ import com.rambukpotha.mail.view.ViewFactory;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.Label;
-import javafx.event.ActionEvent;
 import javafx.scene.control.Button;
 import javafx.scene.control.PasswordField;
 import javafx.scene.control.TextField;
@@ -36,7 +35,7 @@ public class LoginWindowController extends BaseController implements Initializab
 
     @FXML
     void loginButtonAction() {
-        if (ValidateFields()){
+        if (validateFields()){
             EmailAccount emailAccount = new EmailAccount(emailAddressField.getText(), passwordField.getText());
             LoginService loginService = new LoginService(emailAccount, emailManager);
             loginService.start();
@@ -69,7 +68,7 @@ public class LoginWindowController extends BaseController implements Initializab
 
     }
 
-    private boolean ValidateFields(){
+    private boolean validateFields(){
         if (emailAddressField.getText().isEmpty()){
             messageLabel.setText("Email can not be empty!");
             return false;

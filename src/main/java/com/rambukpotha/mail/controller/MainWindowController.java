@@ -37,6 +37,9 @@ public class MainWindowController extends BaseController implements Initializabl
     @FXML
     private WebView emailsWebView;
 
+    private MenuItem markUnreadMenuItem = new MenuItem("Mark as Unread");
+    private MenuItem deleteMessageMenuItem = new MenuItem("Delete Message");
+
     private MessageRenderService messageRenderService;
 
     public MainWindowController(EmailManager emailManager, ViewFactory viewFactory, String fxmlName) {
@@ -50,15 +53,27 @@ public class MainWindowController extends BaseController implements Initializabl
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
-        SetUpEmailsTreeView();
-        SetUpEmailsTableView();
-        SetUpFolderSelection();
-        SetUpMessageRenderService();
-        SetUpMessageSelection();
-        SetUpBolding();
+        setUpEmailsTreeView();
+        setUpEmailsTableView();
+        setUpFolderSelection();
+        setUpMessageRenderService();
+        setUpMessageSelection();
+        setUpBolding();
+        setUpContextMenus();
     }
 
-    private void SetUpBolding() {
+    private void setUpContextMenus() {
+        markUnreadMenuItem.setOnAction(actionEvent -> {
+            emailManager.setUnread();
+        });
+
+        deleteMessageMenuItem.setOnAction(actionEvent -> {
+            emailManager.deleteSelectedMessage();
+            emailsWebView.getEngine().loadContent("");
+        });
+    }
+
+    private void setUpBolding() {
         emailsTableView.setRowFactory(new Callback<TableView<EmailMessage>, TableRow<EmailMessage>>() {
             @Override
             public TableRow<EmailMessage> call(TableView<EmailMessage> emailMessageTableView) {
@@ -79,37 +94,44 @@ public class MainWindowController extends BaseController implements Initializabl
         });
     }
 
-    private void SetUpEmailsTreeView() {
+    private void setUpEmailsTreeView() {
         emailsTreeView.setRoot(emailManager.GetFoldersRoot());
         emailsTreeView.setShowRoot(false);
     }
 
-    private void SetUpEmailsTableView() {
+    private void setUpEmailsTableView() {
         senderColumn.setCellValueFactory(new PropertyValueFactory<EmailMessage, String>("sender"));
         subjectColumn.setCellValueFactory(new PropertyValueFactory<EmailMessage, String>("subject"));
         recipientColumn.setCellValueFactory(new PropertyValueFactory<EmailMessage, String>("recipient"));
         sizeColumn.setCellValueFactory(new PropertyValueFactory<EmailMessage, MessageSizeInteger>("size"));
         dateColumn.setCellValueFactory(new PropertyValueFactory<EmailMessage, Date>("date"));
+
+        emailsTableView.setContextMenu(new ContextMenu(markUnreadMenuItem, deleteMessageMenuItem));
     }
 
-    private void SetUpFolderSelection() {
+    private void setUpFolderSelection() {
         emailsTreeView.setOnMouseClicked(e -> {
             EmailTreeItem<String> item = (EmailTreeItem<String>) emailsTreeView.getSelectionModel().getSelectedItem();
             if (item != null){
+                emailManager.setSelectedFolder(item);
                 emailsTableView.setItems(item.getEmailMessages());
             }
         });
 
     }
 
-    private void SetUpMessageRenderService() {
+    private void setUpMessageRenderService() {
         messageRenderService = new MessageRenderService(emailsWebView.getEngine());
     }
 
-    private void SetUpMessageSelection() {
+    private void setUpMessageSelection() {
         emailsTableView.setOnMouseClicked(event -> {
             EmailMessage emailMessage = emailsTableView.getSelectionModel().getSelectedItem();
             if (emailMessage != null){
+                emailManager.setSelectedMessage(emailMessage);
+                if (!emailMessage.isRead()){
+                    emailManager.setRead();
+                }
                 messageRenderService.setEmailMessage(emailMessage);
                 messageRenderService.restart();
             }

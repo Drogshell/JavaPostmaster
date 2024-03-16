@@ -17,7 +17,7 @@ public class LoginService extends Service {
         this.emailManager = emailManager;
     }
 
-    private EmailLoginResult Login(){
+    private EmailLoginResult login(){
         Authenticator authenticator = new Authenticator() {
             @Override
             protected PasswordAuthentication getPasswordAuthentication() {
@@ -51,7 +51,7 @@ public class LoginService extends Service {
         return new Task<EmailLoginResult>() {
             @Override
             protected EmailLoginResult call() throws Exception {
-                return Login();
+                return login();
             }
         };
     }

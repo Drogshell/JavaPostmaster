@@ -23,7 +23,7 @@ public class MessageRenderService extends Service {
         this.webEngine = webEngine;
         this.stringBuffer = new StringBuffer();
         this.setOnSucceeded(event -> {
-            DisplayMessage();
+            displayMessage();
         });
     }
 
@@ -31,7 +31,7 @@ public class MessageRenderService extends Service {
         this.emailMessage = emailMessage;
     }
 
-    private void LoadMessage() throws MessagingException, IOException {
+    private void loadMessage() throws MessagingException, IOException {
         stringBuffer.setLength(0);
         Message message = emailMessage.getMessage();
         String contentType = message.getContentType();
@@ -59,7 +59,7 @@ public class MessageRenderService extends Service {
         return contentType.contains("multipart");
     }
 
-    private void DisplayMessage(){
+    private void displayMessage(){
         webEngine.loadContent(stringBuffer.toString());
     }
 
@@ -69,7 +69,7 @@ public class MessageRenderService extends Service {
             @Override
             protected Object call() throws Exception {
                 try {
-                    LoadMessage();
+                    loadMessage();
                 }catch (Exception e){
                     e.printStackTrace();
                 }

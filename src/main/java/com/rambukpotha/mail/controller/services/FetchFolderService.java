@@ -2,19 +2,27 @@ package com.rambukpotha.mail.controller.services;
 
 import com.rambukpotha.mail.model.EmailTreeItem;
 import jakarta.mail.Folder;
+import jakarta.mail.Message;
 import jakarta.mail.MessagingException;
 import jakarta.mail.Store;
+import jakarta.mail.event.MessageCountEvent;
+import jakarta.mail.event.MessageCountListener;
 import javafx.concurrent.Service;
 import javafx.concurrent.Task;
+
+import java.util.List;
 
 public class FetchFolderService extends Service<Void> {
 
     private Store store;
     private EmailTreeItem<String> foldersRoot;
 
-    public FetchFolderService(Store store, EmailTreeItem<String> foldersRoot){
+    private List<Folder> folderList;
+
+    public FetchFolderService(Store store, EmailTreeItem<String> foldersRoot, List<Folder> folderList){
         this.store = store;
         this.foldersRoot = foldersRoot;
+        this.folderList = folderList;
     }
 
     @Override
@@ -22,33 +30,58 @@ public class FetchFolderService extends Service<Void> {
         return new Task<Void>() {
             @Override
             protected Void call() throws Exception {
-                FetchFolders();
+                fetchFolders();
                 return null;
             }
         };
     }
 
-    private void FetchFolders() throws MessagingException {
+    private void fetchFolders() throws MessagingException {
         Folder[] folders = store.getDefaultFolder().list();
-        HandleFolders(folders, foldersRoot);
+        handleFolders(folders, foldersRoot);
     }
 
-    private void HandleFolders(Folder[] folders, EmailTreeItem<String> foldersRoot) throws MessagingException {
+    private void handleFolders(Folder[] folders, EmailTreeItem<String> foldersRoot) throws MessagingException {
         for (Folder folder: folders){
+            folderList.add(folder);
             EmailTreeItem<String> emailTreeItem = new EmailTreeItem<>(folder.getName());
             foldersRoot.getChildren().add(emailTreeItem);
             foldersRoot.setExpanded(true);
-            FetchMailInFolder(folder, emailTreeItem);
+            fetchMailInFolder(folder, emailTreeItem);
+            addMessageListenerToFolder(folder, emailTreeItem);
             if (folder.getType() == Folder.HOLDS_FOLDERS)
             {
                 Folder[] subFolders = folder.list();
-                HandleFolders(subFolders, emailTreeItem);
+                handleFolders(subFolders, emailTreeItem);
             }
 
         }
     }
 
-    private void FetchMailInFolder(Folder folder, EmailTreeItem<String> emailTreeItem) {
+    private void addMessageListenerToFolder(Folder folder, EmailTreeItem<String> emailTreeItem) {
+        folder.addMessageCountListener(new MessageCountListener() {
+            @Override
+            public void messagesAdded(MessageCountEvent messageCountEvent) {
+                for (int i = 0; i < messageCountEvent.getMessages().length; i++) {
+                    try {
+                        Message message = folder.getMessage(folder.getMessageCount() - i);
+                        emailTreeItem.addEmailTopside(message);
+                    } catch (MessagingException e) {
+                        e.printStackTrace();
+                    }
+
+                }
+
+            }
+
+            @Override
+            public void messagesRemoved(MessageCountEvent messageCountEvent) {
+
+            }
+        });
+    }
+
+    private void fetchMailInFolder(Folder folder, EmailTreeItem<String> emailTreeItem) {
         Service fetchMailService = new Service() {
             @Override
             protected Task createTask() {
