@@ -8,6 +8,8 @@ import com.rambukpotha.mail.model.EmailTreeItem;
 import jakarta.mail.Flags;
 import jakarta.mail.Folder;
 import jakarta.mail.MessagingException;
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 import javafx.scene.control.TreeItem;
 
 import java.util.ArrayList;
@@ -17,16 +19,18 @@ public class EmailManager {
 
     private EmailMessage selectedMessage;
     private EmailTreeItem<String> selectedFolder;
-
     private FolderUpdateService folderUpdaterService;
-
-    private EmailTreeItem<String> foldersRoot = new EmailTreeItem<String>("");
-
+    private EmailTreeItem<String> foldersRoot = new EmailTreeItem<>("");
     public EmailTreeItem<String> GetFoldersRoot(){
         return foldersRoot;
     }
+    private List<Folder> folderList = new ArrayList<>();
 
-    private List<Folder> folderList = new ArrayList<Folder>();
+    private ObservableList<EmailAccount> emailAccounts = FXCollections.observableArrayList();
+
+    public ObservableList<EmailAccount> getEmailAccounts(){
+        return emailAccounts;
+    }
 
     public EmailManager() {
         folderUpdaterService = new FolderUpdateService(folderList);
@@ -34,7 +38,8 @@ public class EmailManager {
     }
 
     public void AddEmailAccount(EmailAccount emailAccount){
-        EmailTreeItem<String> treeItem = new EmailTreeItem<String>(emailAccount.getAddress());
+        emailAccounts.add(emailAccount);
+        EmailTreeItem<String> treeItem = new EmailTreeItem<>(emailAccount.getAddress());
         FetchFolderService fetchFolderService = new FetchFolderService(emailAccount.getStore(), treeItem, folderList);
         fetchFolderService.start();
         treeItem.setExpanded(true);

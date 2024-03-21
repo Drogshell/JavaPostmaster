@@ -84,5 +84,7 @@ public class LoginWindowController extends BaseController implements Initializab
     public void initialize(URL url, ResourceBundle resourceBundle) {
         // I removed this code for the GIT push.
         // It's meant to hold the login details for faster access into the account.
+        emailAddressField.setText("BiggySmallsReal@gmail.com");
+        passwordField.setText("voznpaafczitdsxj");
     }
 }

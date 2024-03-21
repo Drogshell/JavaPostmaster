@@ -51,6 +51,16 @@ public class MainWindowController extends BaseController implements Initializabl
         viewFactory.ShowSettingsWindow();
     }
 
+    @FXML
+    void composeMessageAction() {
+        viewFactory.ShowComposeMessageWindow();
+    }
+
+    @FXML
+    void addNewEmailAccountAction(){
+        viewFactory.ShowLoginWindow();
+    }
+
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
         setUpEmailsTreeView();

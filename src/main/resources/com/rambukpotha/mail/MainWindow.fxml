@@ -15,7 +15,8 @@
         <menus>
           <Menu mnemonicParsing="false" text="File">
             <items>
-              <MenuItem mnemonicParsing="false" text="Open" />
+                  <MenuItem mnemonicParsing="false" text="Open" />
+                  <MenuItem mnemonicParsing="false" onAction="#addNewEmailAccountAction" text="Add Account" />
             </items>
           </Menu>
           <Menu mnemonicParsing="false" text="Edit">
@@ -28,6 +29,10 @@
               <MenuItem mnemonicParsing="false" text="About" />
             </items>
           </Menu>
+            <Menu mnemonicParsing="false" text="New Mail">
+               <items>
+                  <MenuItem mnemonicParsing="false" onAction="#composeMessageAction" text="Compose Message" />
+               </items></Menu>
         </menus>
       </MenuBar>
       <TreeView fx:id="emailsTreeView" layoutX="15.0" layoutY="40.0" prefHeight="665.0" prefWidth="238.0" AnchorPane.bottomAnchor="10.0" AnchorPane.leftAnchor="10.0" AnchorPane.topAnchor="35.0" />

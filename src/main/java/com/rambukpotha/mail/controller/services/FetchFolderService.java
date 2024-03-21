@@ -54,7 +54,6 @@ public class FetchFolderService extends Service<Void> {
                 Folder[] subFolders = folder.list();
                 handleFolders(subFolders, emailTreeItem);
             }
-
         }
     }
 

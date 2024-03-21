@@ -1,10 +1,12 @@
 package com.rambukpotha.mail.model;
 
+import jakarta.mail.Session;
 import jakarta.mail.Store;
 
 import java.util.Properties;
 
 public class EmailAccount {
+    private Session session;
 
     private String address;
 
@@ -55,5 +57,18 @@ public class EmailAccount {
 
     public void setStore(Store store) {
         this.store = store;
+    }
+
+    public Session getSession() {
+        return session;
+    }
+
+    public void setSession(Session session) {
+        this.session = session;
+    }
+
+    @Override
+    public String toString() {
+        return address;
     }
 }

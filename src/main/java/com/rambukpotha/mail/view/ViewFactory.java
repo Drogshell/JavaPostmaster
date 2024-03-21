@@ -1,10 +1,7 @@
 package com.rambukpotha.mail.view;
 
 import com.rambukpotha.mail.EmailManager;
-import com.rambukpotha.mail.controller.BaseController;
-import com.rambukpotha.mail.controller.LoginWindowController;
-import com.rambukpotha.mail.controller.MainWindowController;
-import com.rambukpotha.mail.controller.SettingsWindowController;
+import com.rambukpotha.mail.controller.*;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
@@ -26,6 +23,9 @@ public class ViewFactory {
         activeStages = new ArrayList<Stage>();
     }
 
+    private ColourThemes colourThemes = ColourThemes.DEFAULT;
+    private FontSizes fontSizes = FontSizes.MEDIUM;
+
     public ColourThemes getColourThemes() {
         return colourThemes;
     }
@@ -42,9 +42,6 @@ public class ViewFactory {
         this.fontSizes = fontSizes;
     }
 
-    private ColourThemes colourThemes = ColourThemes.DEFAULT;
-    private FontSizes fontSizes = FontSizes.MEDIUM;
-
     public void ShowLoginWindow(){
         BaseController controller = new LoginWindowController(emailManager, this, "/com/rambukpotha/mail/LoginWindow.fxml");
         InitStage(controller);
@@ -58,6 +55,11 @@ public class ViewFactory {
 
     public void ShowSettingsWindow(){
         BaseController controller = new SettingsWindowController(emailManager, this, "/com/rambukpotha/mail/SettingsWindow.fxml");
+        InitStage(controller);
+    }
+
+    public void ShowComposeMessageWindow(){
+        BaseController controller = new ComposeMessageController(emailManager, this, "/com/rambukpotha/mail/ComposeMessageWindow.fxml");
         InitStage(controller);
     }
 
